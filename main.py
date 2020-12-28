@@ -54,4 +54,4 @@ async def ok():
             return f'{round(time.time() - _st,2)}', 200
     except Exception as e:
         print('Exception Occured', e)
-        return 'Something went Wrong.'
+        return 'Something went Wrong.', 500
