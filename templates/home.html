@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/joynahid.css">
+  <title>Generate Combined Ranklist</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row py-3">
+      <div class="col">
+        <h2 class="mb-3">Generate Combined Ranklist <sup>α</sup></h2>
+        <p>Before submitting, please give access to all the spreadsheets to
+          <strong>robot-257@rapl-1606686265935.iam.gserviceaccount.com</strong></p>
+        <p>Any bug can be reported on <a href="https://github.com/joynahid/combinedranklist/issues"><span
+              class="badge badge-pill badge-light">github issues</span></a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="loader py-3" style="display: none;">
+      <div class="circle"></div>
+    </div>
+  </div>
+
+  <div id='main-form' class="container">
+    <div class="row">
+      <div class="loader p-3" style="display: none;">
+        <h2 style="color: dodgerblue">Please Wait...</h2>
+      </div>
+      <div class="alert alert-dismissible fade show my-2 rounded w-100" style="display: none;" role="alert">
+        <p></p>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <form class="form" id="form">
+
+          <label for="contest_ids_cf">Codeforces Contest Ids</label>
+          <input id="contest_ids_cf" aria-describedby="contest_ids_cf_help" class="form-control" type="text"
+            placeholder="Codeforces Contest IDs" name="contest_ids_cf" value="1453 1455">
+          <small id="contest_ids_cf_help" class="form-text text-muted">
+            Write Contest IDs Separated by Spaces.
+          </small>
+
+          <label for="contest_ids_atc">Atcoder Contest Ids</label>
+          <input id="contest_ids_atc" aria-describedby="contest_ids_atc_help" class="form-control" type="text"
+            placeholder="Atcoder Contest IDs" name="contest_ids_atc" value="arc110">
+          <small id="contest_ids_atc_help" class="form-text text-muted">
+            Write Contest IDs Separated by Spaces.
+          </small>
+
+          <div id="vjudge_container">
+            <div class="form-row">
+              <div class="col">
+                <label for="contest_ids_vj">VJudge Contest Ids <span
+                    class="badge badge-pill badge-info">New</span></label>
+                <input id="contest_ids_vj" aria-describedby="contest_ids_vj_help" class="form-control" type="text"
+                  placeholder="Vjudge Contest ID" name="contest_ids_vj" value="414522">
+                <small id="contest_ids_vj_help" class="form-text text-muted">
+                  Write one contest ID and password in each field.
+                </small>
+              </div>
+
+              <div class="col">
+                <label for="contest_ids_vj">VJudge Contest Passwords</label>
+                <input id="contest_ids_vj_passwords" aria-describedby="contest_ids_vj_passwords_help"
+                  class="form-control" type="text" placeholder="Vjudge Contest Password" name="contest_ids_vj_passwords"
+                  value="2212">
+                <small id="contest_ids_vj_passwords_help" class="form-text text-muted">
+                  Leave empty if no password is set.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <button id="add_contest_vj" class="mb-2 btn btn-light">+ Add New</button>
+          </div>
+
+          <label for="time_penalty">Time Penalty (seconds)</label>
+          <input id="time_penalty" aria-describedby="time_penalty_help" class="form-control" type="number"
+            placeholder="Time Penalty in seconds" name="time_penalty" value="1200">
+
+          <label for="sheet_link">Spreadsheet URL containing user handles</label>
+          <input id="sheet_link" aria-describedby="sheet_link_help" class="form-control" type="text"
+            placeholder="Paste Sheet URL" name="sheet_link"
+            value="https://docs.google.com/spreadsheets/d/1SjuAxo4n19p5yFUXWLrQRvSvgxFHLug4UfjfHJaNAzE/edit#gid=375182822">
+          <small id="sheet_link_help" class="form-text text-muted">
+            Give access to robot-257@rapl-1606686265935.iam.gserviceaccount.com
+          </small>
+
+          <label for="sheet_range">Sheet Range</label>
+          <input id="sheet_range" aria-describedby="sheet_range_help" class="form-control" type="text"
+            placeholder="Paste Sheet URL" name="sheet_range" value="Form Responses 1!A2:Y1000">
+          <small id="sheet_range_help" class="form-text text-muted">
+            The preloaded value means the data will be read from the cell A1 through Y1000 from Sheet1. The top-left
+            cell's index will be (0,0) in this case
+          </small>
+
+          <label for="unique_user_index">Unique Users Field Index</label>
+          <input id="unique_user_index" aria-describedby="unique_user_index_help" class="form-control" type="number"
+            placeholder="Unique Users Column Index" name="unique_user_index" value="0">
+          <small id="unique_user_index_help" class="form-text text-muted">
+            The field containing unique data. Indexing will be according to the Sheet Range given above
+          </small>
+
+          <label for="cf_user_index">Codeforces Users Field Index</label>
+          <input id="cf_user_index" aria-describedby="cf_user_index_help" class="form-control" type="number"
+            placeholder="Codeforces Users Column Index" name="cf_user_index" value="3">
+          <small id="cf_user_index_help" class="form-text text-muted">
+            The column number containing codeforces handles. Indexing will be according to the Sheet Range given above
+            starting from 0.
+          </small>
+
+          <label for="atc_user_index">Atcoder Users Field Index</label>
+          <input id="atc_user_index" aria-describedby="atc_user_index_help" class="form-control" type="number"
+            placeholder="Atcoder Users Column Index" name="atc_user_index" value="5">
+          <small id="atc_user_index_help" class="form-text text-muted">
+            The column number containing atcoder handles. Indexing will be according to the Sheet Range given above
+            starting from 0.
+          </small>
+
+          <label for="vj_user_index">VJudge Users Field Index</label>
+          <input id="vj_user_index" aria-describedby="vj_user_index_help" class="form-control" type="number"
+            placeholder="Vjudge Users Column Index" name="vj_user_index" value="7">
+          <small id="vj_user_index_help" class="form-text text-muted">
+            The column number containing vjudge handles. Indexing will be according to the Sheet Range given above
+            starting from 0.
+          </small>
+
+          <label for="up_sheet_link">Spreadsheet Link where the standings will be updated</label>
+          <input id="up_sheet_link" aria-describedby="up_sheet_link_help" class="form-control" type="text"
+            placeholder="Vjudge Users Column Index" name="up_sheet_link"
+            value="https://docs.google.com/spreadsheets/d/1mtshftAafZ7VkVqtAk__CVZBJQlZmXAxF8Z9M8EXWcg/edit#gid=0">
+          <small id="up_sheet_link_help" class="form-text text-muted">
+            If you want to change it, make sure it's a valid link and the sheet has access to
+            robot-257@rapl-1606686265935.iam.gserviceaccount.com
+          </small>
+
+          <label for="up_sheet_range">Spreadsheet Range</label>
+          <input id="up_sheet_range" aria-describedby="up_sheet_range_help" class="form-control" type="text"
+            placeholder="Vjudge Users Column Index" name="up_sheet_range" value="Sheet1!A1">
+          <small id="up_sheet_range_help" class="form-text text-muted">
+            If A1, it will start writing from the cell A1
+          </small>
+
+
+          <button type="submit" class="btn btn-success mt-2">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="container my-5">
+    <div class="text-right">
+      <p>All Rights Reserved</p>
+      <p>Created by <a href="https://facebook.com/joynahiid">@joynahiid</a></p>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+  <script src="/static/joynahid.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    background-color: #f1f1f1;
+    line-height: 1.6;
+}
+
+.help-block {
+    font-size: 12px;
+    color: gray;
+}
+
+label {
+    padding-top: 1em;
+    font-weight: 500;
+}
+
+#main-form {
+    padding: 2em;
+    background-color: #ffffff;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    box-shadow: 0px 0px 10px -8px;
+}
+
+input:hover {
+    border-color: dodgerblue;
+}
+
+input {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.form-control:focus {
+    border-width: 1px;
+    background-color: #fcfcfc;
+    border-color: dodgerblue !important;
+    box-shadow: 0px 0px 0px !important;
+}
+
+.badge:hover {
+    background-color: #f1f1f1;
+}
+
+footer {
+    font-size: 12px;
+}
+
+p {
+    margin: 0px;
+}
+
+/* Loading Animation Starts */
+
+.bar {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    margin: 0 auto;
+    background: #f1f1f1;
+    margin-top: 200px;
+}
+
+.circle {
+    position: absolute;
+    top: -30px;
+    margin-left: -30px;
+    height: 60px;
+    width: 60px;
+    left: 0;
+    background: #fff;
+    border-radius: 30%;
+    -webkit-animation: move 5s infinite;
+    opacity: 0.4;
+}
+
+@-webkit-keyframes move {
+    0% {
+        left: 0;
+    }
+    50% {
+        left: 100%;
+        -webkit-transform: rotate(450deg);
+        width: 150px;
+        height: 150px;
+    }
+    75% {
+        left: 100%;
+        -webkit-transform: rotate(450deg);
+        width: 150px;
+        height: 150px;
+    }
+    100 {
+        right: 100%;
+    }
+}
+
+/* Loading Animation Ends */
