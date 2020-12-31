@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
@@ -18,25 +19,30 @@ label {
 }
 
 #main-form {
-    padding: 2em;
+    padding: 2em 2em 2em 2em;
     background-color: #ffffff;
     border-top-left-radius: 1em;
     border-top-right-radius: 1em;
-    box-shadow: 0px 0px 10px -8px;
+    box-shadow: 0px 0px 15px -14px;
 }
 
-input:hover {
-    border-color: dodgerblue;
+.form-control:hover {
+    background-color: #f1f1f1;
+    width: 98%;
+    transition-delay: 1s;
 }
 
-input {
-    font-family: 'Courier New', Courier, monospace;
+.form-control {
+    border-width: 0px;
+    font-family: 'JetBrains Mono', monospace;
+    border-color: transparent;
+    background-color: #fafafa;
+    border-radius: 10px;
 }
 
 .form-control:focus {
-    border-width: 1px;
-    background-color: #fcfcfc;
-    border-color: dodgerblue !important;
+    border-width: 0px;
+    background-color: #f1f1f1;
     box-shadow: 0px 0px 0px !important;
 }
 
@@ -51,50 +57,3 @@ footer {
 p {
     margin: 0px;
 }
-
-/* Loading Animation Starts */
-
-.bar {
-    position: relative;
-    height: 2px;
-    width: 100%;
-    margin: 0 auto;
-    background: #f1f1f1;
-    margin-top: 200px;
-}
-
-.circle {
-    position: absolute;
-    top: -30px;
-    margin-left: -30px;
-    height: 60px;
-    width: 60px;
-    left: 0;
-    background: #fff;
-    border-radius: 30%;
-    -webkit-animation: move 5s infinite;
-    opacity: 0.4;
-}
-
-@-webkit-keyframes move {
-    0% {
-        left: 0;
-    }
-    50% {
-        left: 100%;
-        -webkit-transform: rotate(450deg);
-        width: 150px;
-        height: 150px;
-    }
-    75% {
-        left: 100%;
-        -webkit-transform: rotate(450deg);
-        width: 150px;
-        height: 150px;
-    }
-    100 {
-        right: 100%;
-    }
-}
-
-/* Loading Animation Ends */

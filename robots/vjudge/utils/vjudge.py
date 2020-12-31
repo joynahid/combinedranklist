@@ -23,8 +23,6 @@ class VjudgeContest:
                 not_found_cs_pass.append(contest_passwords[i])
                 not_found_contests.append(contests[i])
 
-            print(not_found_contests, not_found_cs_pass)
-
             if len(not_found_cs):
                 not_found_res = vjudge_standings(not_found_contests, not_found_cs_pass)
 
@@ -32,8 +30,6 @@ class VjudgeContest:
 
             if len(not_found_res):
                 batch_res+=not_found_res
-
-            print(batch_res)
             
             relevant_res = []
 

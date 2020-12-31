@@ -1,7 +1,7 @@
 import os
 import asyncio
 import json
-from robots.provider.db import db, ds
+from robots.provider.db import db, ds # DataBase & Data Storage
 
 ref = db.collection('contests')
 

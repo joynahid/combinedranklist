@@ -15,29 +15,25 @@
   <div class="container">
     <div class="row py-3">
       <div class="col">
-        <h2 class="mb-3">Generate Combined Ranklist <sup>α</sup></h2>
+        <h2 class="mb-3">
+          Generate Combined Ranklist
+          <sup>α</sup>
+        </h2>
         <p>Before submitting, please give access to all the spreadsheets to
           <strong>robot-257@rapl-1606686265935.iam.gserviceaccount.com</strong></p>
-        <p>Any bug can be reported on <a href="https://github.com/joynahid/combinedranklist/issues"><span
-              class="badge badge-pill badge-light">github issues</span></a>.</p>
+        <p class="mt-2"> Any bug can be reported on <a href="https://github.com/joynahid/combinedranklist/issues"><span
+              class="badge badge-pill badge-light">github issues</span></a></p>
       </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="loader py-3" style="display: none;">
-      <div class="circle"></div>
     </div>
   </div>
 
   <div id='main-form' class="container">
     <div class="row">
-      <div class="loader p-3" style="display: none;">
-        <h3 style="color: dodgerblue">Please Wait...</h3>
+      <div class="loader p-3 mt-2" style="display: none;">
+        <h5 style="color: dodgerblue">Please Wait...</h5>
       </div>
       <div class="alert alert-dismissible fade show my-2 rounded w-100" style="display: none;" role="alert">
         <p></p>
-
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -48,15 +44,22 @@
         <form class="form" id="form">
 
           <label for="contest_ids_cf">Codeforces Contest Ids</label>
-          <input id="contest_ids_cf" aria-describedby="contest_ids_cf_help" class="form-control" type="text"
-            placeholder="Codeforces Contest IDs" name="contest_ids_cf" value="1453 1455">
+          <div class="d-flex">
+            <img class="rounded p-1 mr-2" width="35" src="/static/icons/codeforces_com.png" alt="cf">
+            <input id="contest_ids_cf" aria-describedby="contest_ids_cf_help" class="form-control" type="text"
+              placeholder="Codeforces Contest IDs" name="contest_ids_cf" value="1453 1455">
+          </div>
           <small id="contest_ids_cf_help" class="form-text text-muted">
             Write Contest IDs Separated by Spaces.
           </small>
 
           <label for="contest_ids_atc">Atcoder Contest Ids</label>
-          <input id="contest_ids_atc" aria-describedby="contest_ids_atc_help" class="form-control" type="text"
-            placeholder="Atcoder Contest IDs" name="contest_ids_atc" value="arc110">
+          <div class="d-flex">
+            <img class="rounded p-1 mr-2" width="35" src="/static/icons/atcoder_jp.png" alt="at">
+            <input id="contest_ids_atc" aria-describedby="contest_ids_atc_help" class="form-control" type="text"
+              placeholder="Atcoder Contest IDs" name="contest_ids_atc" value="arc110">
+          </div>
+
           <small id="contest_ids_atc_help" class="form-text text-muted">
             Write Contest IDs Separated by Spaces.
           </small>
@@ -64,10 +67,15 @@
           <div id="vjudge_container">
             <div class="form-row">
               <div class="col">
-                <label for="contest_ids_vj">VJudge Contest Ids <span
-                    class="badge badge-pill badge-info">New</span></label>
-                <input id="contest_ids_vj" aria-describedby="contest_ids_vj_help" class="form-control" type="text"
-                  placeholder="Vjudge Contest ID" name="contest_ids_vj" value="414522">
+
+                <label for="contest_ids_vj">VJudge Contest Ids</label>
+
+                <div class="d-flex">
+                  <img class="rounded p-1 mr-2" width="35" src="/static/icons/vjudge.ico" alt="vj">
+                  <input id="contest_ids_vj" aria-describedby="contest_ids_vj_help" class="form-control" type="text"
+                    placeholder="Vjudge Contest ID" name="contest_ids_vj" value="414522">
+                </div>
+
                 <small id="contest_ids_vj_help" class="form-text text-muted">
                   Write one contest ID and password in each field.
                 </small>

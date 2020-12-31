@@ -45,8 +45,6 @@ async def ok():
                 data['contest_ids_vj'] = data['contest_ids_vj'].split()
                 data['contest_ids_vj_passwords'] = data['contest_ids_vj_passwords'].split(' ')
 
-            print(data)
-
             c_ranks = CombRanklist(**data)
 
             await c_ranks.make_standings()
