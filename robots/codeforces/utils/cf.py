@@ -20,6 +20,8 @@ class Codeforces:
 
         # TODO Handle Exceptions for response
 
+        print(responses)
+
         batch_res = []
 
         for response in responses:

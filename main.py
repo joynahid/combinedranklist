@@ -15,41 +15,30 @@ app = Quart(__name__)
 async def main():
     return await render_template('home.html')
 
-@app.route('/api/vjudge_standings', methods=['POST'])
-async def vj_standings():
-    if request.method == 'POST':
-        id= request.args.get('contests').split()
-        p= request.args.get('contest_pass').split()
-
-        print(id, p)
-
-        res = vjudge_standings(id, p)
-
-    return await jsonify(res)
-
 @app.route('/api/v1/generate_standings', methods=["POST"])
 async def ok():
-    try:
-        if request.method == 'POST':
-            _st = time.time()
+    # try:
+    if request.method == 'POST':
+        _st = time.time()
 
-            data = await request.form
-            
-            if 'contest_ids_cf' in data:
-                data['contest_ids_cf'] = data['contest_ids_cf'].split()
+        data = await request.form
+        
+        if 'contest_ids_cf' in data:
+            data['contest_ids_cf'] = data['contest_ids_cf'].split()
 
-            if 'contest_ids_atc' in data:
-                data['contest_ids_atc'] = data['contest_ids_atc'].split()
+        if 'contest_ids_atc' in data:
+            data['contest_ids_atc'] = data['contest_ids_atc'].split()
 
-            if 'contest_ids_vj' in data:
-                data['contest_ids_vj'] = data['contest_ids_vj'].split()
-                data['contest_ids_vj_passwords'] = data['contest_ids_vj_passwords'].split(' ')
+        if 'contest_ids_vj' in data:
+            data['contest_ids_vj'] = data['contest_ids_vj'].split()
+            data['contest_ids_vj_passwords'] = data['contest_ids_vj_passwords'].split(' ')
 
-            c_ranks = CombRanklist(**data)
+        c_ranks = CombRanklist(**data)
 
-            await c_ranks.make_standings()
-            await c_ranks.dump_standings_to_sheet()
-            return f'{round(time.time() - _st,2)}', 200
-    except Exception as e:
-        print('Exception Occured', e)
-        return 'Something went Wrong.', 500
+        await c_ranks.make_standings()
+        await c_ranks.dump_standings_to_sheet()
+        return f'{round(time.time() - _st,2)}', 200
+    # except Exception as e:
+
+    #     print('Exception Occured', e)
+    #     return 'Something went Wrong.', 500

@@ -72,15 +72,14 @@ class CombRanklist:
                     key: rows[self.unique_user_index][i]
                 })
 
-            # print(self.handles['vjudge'])
-
             self.handles = toNamedTuple(UserInfo, self.handles) # For Fast Queries
-        except:
+        except Exception as e:
+            print("Error Fetch From Sheet", e)
             pass
 
     async def get_cf_standings(self):
         try:
-            if self.contest_ids_cf is not None:
+            if len(self.contest_ids_cf):
                 standings = await Codeforces.standings(self.contest_ids_cf, self.handles.codeforces)
 
                 for each in standings:
@@ -118,16 +117,25 @@ class CombRanklist:
                                 }
                             }
                         )
-        except:
+        except Exception as e:
+            print("CF Error", e)
             pass
 
     async def get_cf_maxrating(self):
-        self.max_rating = {}
-        data = await Codeforces.user_info(self.handles.codeforces)
-        for i in data['result']:
-            if 'maxRating' in i:
-                self.max_rating[self.unique['codeforces'][i['handle'].lower()]] = i['maxRating']
-            else: self.max_rating[self.unique['codeforces'][i['handle'].lower()]] = 'Not Available'
+        try:
+            self.max_rating = {}
+            data = await Codeforces.user_info(self.handles.codeforces)
+
+            print(data)
+
+            if 'result' in data:
+                for i in data['result']:
+                    if 'maxRating' in i:
+                        self.max_rating[self.unique['codeforces'][i['handle'].lower()]] = i['maxRating']
+                    else: self.max_rating[self.unique['codeforces'][i['handle'].lower()]] = 'Not Available'
+            
+        except:
+            pass
     
     def get_atc_standings(self):
         try:
@@ -195,19 +203,20 @@ class CombRanklist:
                             )
                         )
 
-                    self.standings[self.unique['vjudge'][handle]].update({
-                            'vj' + str(contestId): {
-                                'problems' : problemRes,
-                                'rank' : rank
+                    if handle in self.unique['vjudge']:
+                        self.standings[self.unique['vjudge'][handle]].update({
+                                'vj' + str(contestId): {
+                                    'problems' : problemRes,
+                                    'rank' : rank
+                                }
                             }
-                        }
-                    )
+                        )
         except Exception as e:
             print('Vjudge generation error', e)
             pass
 
     async def make_standings(self):
-        await self.get_cf_standings()
+        # await self.get_cf_standings()
         self.get_atc_standings()
         self.get_vj_standings()
 
@@ -251,7 +260,7 @@ class CombRanklist:
         return self.json_standings
 
     async def get_sheet_friendly_standings(self):
-        await self.get_cf_maxrating()
+        # await self.get_cf_maxrating()
         all_divisions = {}
 
         for uniq in self.json_standings:
@@ -274,8 +283,9 @@ class CombRanklist:
                         len(self.json_standings[uniq]['problemStats'][i]))
                 else:
                     data.append(0)
+        
+            data.append("")
 
-            data.append(self.max_rating[uniq])
             data+= deque(self.json_standings[uniq]['ranks'])
             row_data.append(data)
         
