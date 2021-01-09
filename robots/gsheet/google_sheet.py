@@ -61,5 +61,3 @@ def update(from_,  data, link = None, _formatting= None):
 
     request = sheet_service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_, valueInputOption=value_input_option, body=value_range_body)
     response = request.execute()
-
-# main('1mtshftAafZ7VkVqtAk__CVZBJQlZmXAxF8Z9M8EXWcg')

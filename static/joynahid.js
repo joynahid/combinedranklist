@@ -19,9 +19,30 @@ addNewVj.addEventListener("click", (e) => {
     $('#vjudge_container').append(vjudgeHolder);
 });
 
+var yo = 0;
+
 form.addEventListener("submit", (e) => {
+
+    let worker = setInterval(() => {
+        if(yo%3 == 0) $("#working").html("Working.");
+        else if(yo%3 == 1) $("#working").html("Working..");
+        else $("#working").html("Working...");
+
+        yo++;
+    }, 500);
+
+    var ws = new WebSocket('ws://' + document.domain + ':' + location.port + '/ws');
+    ws.onmessage = function (event) {
+        $("#stream").append(`<li class="list-group-item"> > ${event.data}</li>`)
+    };
+
+    ws.onclose = function () { 
+        clearInterval(worker);
+     }
+
     window.scrollTo(0, 0);
 
+    $("#stream").html("");
     $('.loader').fadeIn(500);
 
     e.preventDefault();
@@ -40,6 +61,9 @@ form.addEventListener("submit", (e) => {
         let str = value.slice(0, -1);
         payload[key] = str;
     };
+
+    ws.onopen = function () { ws.send(JSON.stringify(payload)); }
+    return;
 
     $.ajax({
         type: "post",

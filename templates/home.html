@@ -20,7 +20,8 @@
           <sup>α</sup>
         </h2>
         <p>Before submitting, please give access to all the spreadsheets to
-          <strong>robot-257@rapl-1606686265935.iam.gserviceaccount.com</strong></p>
+          <strong>robot-257@rapl-1606686265935.iam.gserviceaccount.com</strong>
+        </p>
         <p class="mt-2"> Any bug can be reported on <a href="https://github.com/joynahid/combinedranklist/issues"><span
               class="badge badge-pill badge-light">github issues</span></a></p>
       </div>
@@ -29,8 +30,10 @@
 
   <div id='main-form' class="container">
     <div class="row">
-      <div class="loader p-3 mt-2" style="display: none;">
-        <h5 style="color: dodgerblue">Please Wait...</h5>
+      <div class="loader mt-2" style="display: none; font-family: 'JetBrains Mono'; font-size: 12px;">
+        <h5 class="pl-4" id="working">Working...</h5>
+        <ul id="stream" class="list-group w-100">
+        </ul>
       </div>
       <div class="alert alert-dismissible fade show my-2 rounded w-100" style="display: none;" role="alert">
         <p></p>
@@ -43,13 +46,11 @@
       <div class="col">
         <form class="form" id="form">
 
-          <p>Notice: Codeforces is temporarily Disabled due to handle changes.</p>
-
           <label for="contest_ids_cf">Codeforces Contest Ids</label>
           <div class="d-flex">
             <img class="rounded p-1 mr-2" width="35" src="/static/icons/codeforces_com.png" alt="cf">
             <input id="contest_ids_cf" aria-describedby="contest_ids_cf_help" class="form-control" type="text"
-              placeholder="Codeforces Contest IDs" name="contest_ids_cf" value="" disabled>
+              placeholder="Codeforces Contest IDs" name="contest_ids_cf" value="1453 1455">
           </div>
           <small id="contest_ids_cf_help" class="form-text text-muted">
             Write Contest IDs Separated by Spaces.

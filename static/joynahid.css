@@ -57,3 +57,23 @@ footer {
 p {
     margin: 0px;
 }
+
+.list-group {
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.list-group::-webkit-scrollbar {
+    display: none;
+}
+
+.list-group {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.list-group-item {
+    border: 0px !important;
+}

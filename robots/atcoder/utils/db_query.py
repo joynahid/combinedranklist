@@ -3,15 +3,17 @@ import asyncio
 import json
 from robots.provider.db import db, ds
 
-ref = db.collection('contests')
+ref = db.collection("contests")
+
 
 def atc_stands_from_db(contests):
-    doc = ref.document('available_contests').get().to_dict()
+    doc = ref.document("available_contests").get().to_dict()
 
     mp = {}
 
-    if doc is None: return ([], contests)
-    
+    if doc is None:
+        return ([], contests)
+
     for key in doc:
         mp[key] = 1
 
@@ -24,9 +26,11 @@ def atc_stands_from_db(contests):
             blob = ds.blob(filename)
             doc = json.loads(blob.download_as_string())
             data.append(doc)
-        else: not_found.append(i)
-    
+        else:
+            not_found.append(i)
+
     return (data, not_found)
+
 
 async def atc_stands_saveto_db(contest_name, res):
     filename = "/atc/contests/" + contest_name + ".json"
@@ -35,6 +39,4 @@ async def atc_stands_saveto_db(contest_name, res):
 
     url = blob.public_url
 
-    ref.document("available_contests").update({
-        str(contest_name) : url
-    })
+    ref.document("available_contests").update({str(contest_name): url})

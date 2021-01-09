@@ -2,14 +2,16 @@ from robots.atcoder.utils.api_query import atc_standings
 from essentials.essen_func import toNamedTuple
 from robots.atcoder.utils.db_query import atc_stands_from_db
 
-TO_SEC = 1000000000 # From atcoder inspection :p
+TO_SEC = 1000000000  # From atcoder inspection :p
+
 
 class AtcoderContest:
     @staticmethod
     def standings(contests, handles):
         fast_query = {}
 
-        for x in handles: fast_query[x] = 1
+        for x in handles:
+            fast_query[x] = 1
 
         batch_res = atc_stands_from_db(contests)
 
@@ -28,8 +30,8 @@ class AtcoderContest:
         relevant_res = []
 
         for contest in batch_res:
-            for each in contest['StandingsData']:
-                if each['UserScreenName'].lower() in fast_query:
+            for each in contest["StandingsData"]:
+                if each["UserScreenName"].lower() in fast_query:
                     relevant_res.append(each)
 
         return relevant_res
