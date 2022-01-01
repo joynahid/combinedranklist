@@ -1,11 +1,14 @@
 import asyncio
 import logging
+from typing import Any
+
+from dataclasses import dataclass
 from robots.codeforces.model.structure import ProblemResults
 from robots.codeforces.utils.cf import Codeforces
 from robots.atcoder.utils.atc import AtcoderContest
 from robots.codeforces.utils.resolve_handles import filter_bad_handles
 from robots.vjudge.utils.vjudge import VjudgeContest
-from combined_ranklist.structure import SameProblemResults, UserInfo
+from combined_ranklist.structure import SameProblemResults
 from combined_ranklist.sheet_formatting import format_sheet
 from collections import defaultdict, deque
 from robots.gsheet.gservice_conf import drive_service, sheet_service
@@ -15,6 +18,14 @@ from quart import websocket
 
 CF_DIVISIONS = ["div. 1", "div. 2", "div. 3", "div. 4"]
 
+@dataclass
+class UserInfo:
+    unique: Any
+    codeforces: Any
+    vjudge: Any
+    atcoder: Any
+
+
 logging.basicConfig(
     filename="build_log.txt",
     level=logging.ERROR,
@@ -23,6 +34,7 @@ logging.basicConfig(
 )
 
 logging.getLogger(__name__)
+
 
 class CombRanklist:
     def __init__(self, **kwargs):
@@ -42,27 +54,22 @@ class CombRanklist:
         self.handles = {}
         self.unique = dict(codeforces={}, atcoder={}, vjudge={})
 
-        try:
-            self.fetch_from_sheet()
+        self.fetch_from_sheet()
 
-            self.standings = {}
-            for i in self.handles.unique:
-                self.standings[i] = {}
+        self.standings = {}
+        for i in self.handles.unique:
+            self.standings[i] = {}
 
-            self.json_standings = {}
-        except:
-            pass
+        self.json_standings = {}
 
     def fetch_from_sheet(self):
-        rows = []       
+        rows = []
         if self.sheet_link is not None:
             rows = retrieve(self.sheet_link, self.sheet_range, "COLUMNS")
 
         self.handles["codeforces"] = [x for x in filter_bad_handles([
             x.lower().strip() for x in rows[self.cf_user_index]
         ])]
-
-        print(self.handles['codeforces'])
 
         self.handles["unique"] = rows[self.unique_user_index]
 
@@ -78,28 +85,32 @@ class CombRanklist:
 
         for i in range(len(self.handles["codeforces"])):
             key = self.handles["codeforces"][i]
-            self.unique["codeforces"].update({key: rows[self.unique_user_index][i]})
+            self.unique["codeforces"].update(
+                {key: rows[self.unique_user_index][i]})
 
         for i in range(len(self.handles["atcoder"])):
             key = self.handles["atcoder"][i]
-            self.unique["atcoder"].update({key: rows[self.unique_user_index][i]})
+            self.unique["atcoder"].update(
+                {key: rows[self.unique_user_index][i]})
 
         for i in range(len(self.handles["vjudge"])):
             key = self.handles["vjudge"][i]
-            self.unique["vjudge"].update({key: rows[self.unique_user_index][i]})
+            self.unique["vjudge"].update(
+                {key: rows[self.unique_user_index][i]})
 
-        self.handles = toNamedTuple(UserInfo, self.handles)  # For Fast Queries
+        self.handles = UserInfo(**self.handles)
 
     async def get_cf_standings(self):
         if len(self.contest_ids_cf):
             logging.info(
                 f"Codeforces: Retrieving ranklist for {len(self.contest_ids_cf)} contests"
             )
+
             standings = await Codeforces.standings(
                 self.contest_ids_cf, self.handles.codeforces
             )
 
-            print(standings)
+            # print(standings)
 
             for each in standings:
                 for row in each[2]:  # index of all_rows = 2
@@ -230,7 +241,6 @@ class CombRanklist:
             await websocket.send(f"Retrieving codeforces ranklist ({len(self.contest_ids_cf)} contests)")
             await self.get_cf_standings()
 
-
         if len(self.contest_ids_atc):
             await websocket.send(f"Retrieving atcoder ranklist ({len(self.contest_ids_atc)} contests)")
             self.get_atc_standings()
@@ -261,7 +271,8 @@ class CombRanklist:
                     if i.bestSubmissionTimeSeconds:  # If accepted
                         if i.pointsGained > 1:  # If points available
                             points += i.pointsGained
-                        solved += int(bool(i.pointsGained))  # add 1 to solved count
+                        # add 1 to solved count
+                        solved += int(bool(i.pointsGained))
                         key = i.problemDivision + "_" + i.index.split()[1]
 
                         if key not in data_i["problemStats"]:
@@ -290,7 +301,7 @@ class CombRanklist:
         except Exception as e:
             await websocket.send("Failed to get max rating. " + str(e))
             without = " without codeforces max rating "
-            
+
         all_divisions = {}
 
         await websocket.send("Generating sheet friendly standings" + without)
@@ -329,7 +340,8 @@ class CombRanklist:
             ]
             for i in all_divisions:
                 if i in self.json_standings[uniq]["problemStats"]:
-                    data.append(len(self.json_standings[uniq]["problemStats"][i]))
+                    data.append(
+                        len(self.json_standings[uniq]["problemStats"][i]))
                 else:
                     data.append(0)
 
@@ -360,4 +372,5 @@ class CombRanklist:
 
         _format = format_sheet(self.up_sheet_link)
 
-        update(self.up_sheet_range, sheet_standings, self.up_sheet_link, _format)
+        update(self.up_sheet_range, sheet_standings,
+               self.up_sheet_link, _format)

@@ -3,6 +3,7 @@ import asyncio
 import json
 from combined_ranklist.app import CombRanklist
 from quart import render_template, jsonify, request, make_response, websocket
+import traceback
 
 class Manager:
     @staticmethod
@@ -35,5 +36,6 @@ class Manager:
             
             await websocket.send(f"Successfully updated in {round(time.time() - _st,2)} seconds")
         except Exception as e:
+            print(traceback.format_exc())
             await websocket.send("<span style='color:red'>"+str(e)+"</span>")
             await websocket.send("Aborted")
