@@ -1,8 +1,11 @@
+import hashlib
 from typing import List
 from codeforces import CodeforcesAPI
 import requests
 
 data = {}
+good_cache = {}
+flat_cache = {}
 
 
 class cache:
@@ -29,6 +32,11 @@ def get_cf_users():
 
 
 def filter_bad_handles(handles: List[str]):
+    hash = hashlib.sha256("".join([handles])).digest()
+
+    if hash in good_cache and hash in flat_cache:
+        return good_cache[hash], flat_cache[hash]
+
     users = get_cf_users()
 
     lookup = {}
@@ -63,5 +71,8 @@ def filter_bad_handles(handles: List[str]):
                 good.append(None)
                 flat.append(None)
                 continue
+
+    good_cache[hash] = good
+    flat_cache[hash] = flat
 
     return good, flat
