@@ -3,6 +3,7 @@ import logging
 from robots.codeforces.model.structure import ProblemResults
 from robots.codeforces.utils.cf import Codeforces
 from robots.atcoder.utils.atc import AtcoderContest
+from robots.codeforces.utils.resolve_handles import filter_bad_handles
 from robots.vjudge.utils.vjudge import VjudgeContest
 from combined_ranklist.structure import SameProblemResults, UserInfo
 from combined_ranklist.sheet_formatting import format_sheet
@@ -57,9 +58,12 @@ class CombRanklist:
         if self.sheet_link is not None:
             rows = retrieve(self.sheet_link, self.sheet_range, "COLUMNS")
 
-        self.handles["codeforces"] = [
+        self.handles["codeforces"] = [x for x in filter_bad_handles([
             x.lower().strip() for x in rows[self.cf_user_index]
-        ]
+        ])]
+
+        print(self.handles['codeforces'])
+
         self.handles["unique"] = rows[self.unique_user_index]
 
         if self.atc_user_index >= 0:
