@@ -33,27 +33,35 @@ def filter_bad_handles(handles: List[str]):
 
     lookup = {}
     for i, u in enumerate(users):
-        lookup[u.handle.lower()] = u.handle
+        lookup[u.handle.lower()] = 1
 
     good = []
-    needfix = []
+    flat = []
     for h in handles:
         if h.lower() in lookup:
-            good.append(lookup[h])
+            good.append(h.lower())
+            flat.append(h.lower())
         else:
-            needfix.append(h.lower())
+            e = h.lower()
 
-    for e in needfix:
-        resp = requests.head(
-            "https://codeforces.com/profile/"+e, allow_redirects=False)
-        url = resp.headers.get('Location')
+            resp = requests.head(
+                "https://codeforces.com/profile/"+e, allow_redirects=False)
+            url = resp.headers.get('Location')
 
-        if url is None: continue
+            if url is None:
+                good.append(None)
+                flat.append(None)
+                continue
 
-        if "profile" in url:
-            new_handle = url.split("/").pop()
-            good.append(new_handle)
+            if "profile" in url:
+                new_handle = url.split("/").pop()
+                good.append((e.lower(), new_handle.lower()),)
+                flat.append(new_handle.lower())
 
-            print("resolved", e ,"to", new_handle)
+                print("resolved", e, "to", new_handle)
+            else:
+                good.append(None)
+                flat.append(None)
+                continue
 
-    return good
+    return good, flat

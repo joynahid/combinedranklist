@@ -18,6 +18,7 @@ from quart import websocket
 
 CF_DIVISIONS = ["div. 1", "div. 2", "div. 3", "div. 4"]
 
+
 @dataclass
 class UserInfo:
     unique: Any
@@ -67,9 +68,9 @@ class CombRanklist:
         if self.sheet_link is not None:
             rows = retrieve(self.sheet_link, self.sheet_range, "COLUMNS")
 
-        self.handles["codeforces"] = [x for x in filter_bad_handles([
+        self.handles["codeforces"], cf = filter_bad_handles([
             x.lower().strip() for x in rows[self.cf_user_index]
-        ])]
+        ])
 
         self.handles["unique"] = rows[self.unique_user_index]
 
@@ -85,6 +86,16 @@ class CombRanklist:
 
         for i in range(len(self.handles["codeforces"])):
             key = self.handles["codeforces"][i]
+
+            if type(key) is tuple:
+                old, newhandle = key
+                self.unique["codeforces"].update(
+                    {old: rows[self.unique_user_index][i]})
+                self.unique["codeforces"].update(
+                    {newhandle: rows[self.unique_user_index][i]})
+
+                continue
+
             self.unique["codeforces"].update(
                 {key: rows[self.unique_user_index][i]})
 
@@ -97,6 +108,8 @@ class CombRanklist:
             key = self.handles["vjudge"][i]
             self.unique["vjudge"].update(
                 {key: rows[self.unique_user_index][i]})
+
+        self.handles["codeforces"] = cf
 
         self.handles = UserInfo(**self.handles)
 

@@ -17,6 +17,15 @@ from essentials.essen_func import toNamedTuple
 class Codeforces:
     @staticmethod
     async def standings(contest_ids, handles=None):
+
+        hs = []
+        for i in handles:
+            if i is None:
+                continue
+            hs.append(i)
+
+        handles = hs
+
         params = {"contestId": contest_ids}
 
         if handles is not None:
@@ -45,14 +54,25 @@ class Codeforces:
                     for problem_result in row["problemResults"]
                 ]
 
-            ranklist = [toNamedTuple(Rows, row_dict) for row_dict in response["rows"]]
+            ranklist = [toNamedTuple(Rows, row_dict)
+                        for row_dict in response["rows"]]
 
             batch_res.append((contest, problems, ranklist))
 
         return batch_res
 
+    # Dummy
     @staticmethod
     async def user_info(handles):
+
+        hs = []
+        for i in handles:
+            if i is None:
+                continue
+            hs.append(i)
+
+        handles = hs
+
         params = {}
         if handles is not None:
             params["handles"] = ";".join(handles)
