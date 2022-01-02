@@ -32,7 +32,7 @@ def get_cf_users():
 
 
 def filter_bad_handles(handles: List[str]):
-    hash = hashlib.sha256("".join([handles])).digest()
+    hash = hashlib.sha256("".join(handles).encode('utf-8')).digest()
 
     if hash in good_cache and hash in flat_cache:
         return good_cache[hash], flat_cache[hash]

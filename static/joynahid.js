@@ -31,7 +31,7 @@ form.addEventListener("submit", (e) => {
   }, 500);
 
   var ws = new WebSocket(
-    "wss://" + document.domain + ":" + location.port + "/ws"
+    "ws://" + document.domain + ":" + location.port + "/ws"
   );
   ws.onmessage = function (event) {
     $("#stream").append(`<li class="list-group-item"> > ${event.data}</li>`);
